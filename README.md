@@ -27,3 +27,26 @@ oc whoami --show-context                view current context
 oc whoami --show-server                  check server you logged into
 oc config get-clusters                  list all OCP clusters you have logged into
 oc config get-contexts                  list all context have ever been created
+
+
+TS:
+oc get sa -n uat-admin002
+oc get sa jenkins -n uat-admin002
+oc get sa jenkins -n uat-admin002 -oyaml
+oc get sa -n cicd
+oc get sa jenkins -n cicd -oyaml
+oc get sa secrect -n uat-admon002
+oc get sa jenkins -n uat-admin002 -oyaml > /tmp/jenkinssa.yaml
+oc edit sa jenkins -n uat-admin002
+oc get svc -n cicd
+oc get svc -n cicd jenkins -oyaml
+oc get svc jenkins -n uat-admin002 > /tmp/svc.yaml
+oc edit svc jenkins -n uat-admin002
+oc get all
+oc get svc
+oc get svc jenkins-jnlp
+oc get svc jenkins-jnlp -oyaml > /tmp/jnlp.yaml
+oc get all
+oc delete svc jenkins jenkins-jnlp
+oc delete route jenkins
+oc get build -oyaml

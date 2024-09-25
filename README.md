@@ -29,6 +29,26 @@ oc config get-clusters                  list all OCP clusters you have logged in
 oc config get-contexts                  list all context have ever been created
 
 
+
+install ansible operator:
+oc new-project dev-game-app
+install ansible automation platform to namespace aap
+oc get operators
+oc get pods -n aap
+create an instance of automation controller named ansible
+to access UI of ansible automation platform:
+export SA_SECRET=ansible
+oc get route -n aap | grep $(echo ${SA_SECRET}) | awk '{print$2}'
+copy the url to broswer
+username is admin
+oc get secret $SA_SECRET-admin-password -o jsonpath='{.data.password}' -n aap | base64 --decode       Get password
+setup subscrib
+
+
+
+
+
+
 TS:
 oc get sa -n uat-admin002
 oc get sa jenkins -n uat-admin002

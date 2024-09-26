@@ -45,6 +45,58 @@ oc get secret $SA_SECRET-admin-password -o jsonpath='{.data.password}' -n aap | 
 setup subscrib
 
 
+cat <<EOF | oc apply -f -
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev-game-app
+
+---
+  apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+      annotations:
+      name: containergroup-service-account
+      namespace: dev-game-app
+
+---
+  kind: Role
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: role-containergroup-service-account
+    namespace: dev-game-app
+  rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+  kind: RoleBinding
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: role-containergroup-service-account-binding
+    namespace: dev-game-app
+  subjects:
+  - kind: ServiceAccount
+    name: containergroup-service-account
+  roleRef:
+    kind: Role
+    name: role-containergroup-service-account
+    apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token
+metadata:
+  name: cicd
+  annotations:
+    kubernetes.io/service-account.name: "containergroup-service-account"
+EOF
+
+cd home && oc get secret cicd -o json | jq '.data.token' | xargs | base64 --decode > containergroup-sa.token
+oc get secret cicd -o json | jq '.data["ca.crt"]' | xargs | base64 --decode > containergroup-ca.crt
 
 
 

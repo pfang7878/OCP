@@ -1,0 +1,4 @@
+oc explain pod
+oc explain pod.spec.containers
+oc create -f pod/pod.yaml       run a pod
+

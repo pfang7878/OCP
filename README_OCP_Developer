@@ -1,4 +1,28 @@
 oc explain pod
 oc explain pod.spec.containers
 oc create -f pod/pod.yaml       run a pod
-
+oc get pods
+oc rsh <pod name>                 shell into pod
+exit
+oc delete pod <pod name>
+oc get pods --watch
+oc explain deploymentconfig
+oc new-app quay.io/practicalopenshift/hello-world --as-deployment-config
+oc status
+oc get pods
+oc get svc
+oc get dc
+oc get istag
+oc delete svc/hello-world
+oc get svc
+oc status
+oc delete dc/hello-world
+oc new-app quay.io/practicalopenshift/hello-world --as-deployment-config
+oc describe dc/hello-world
+oc delete all -l app=hello-world          clear up use tag selector
+oc new-app quay.io/practicalopenshift/hello-world --name demo-app --as-deployment-config
+oc describe dc/demo-app
+oc new-app quay.io/practicalopenshift/hello-world --name demo-app-2 --as-deployment-config
+oc delete all -l app=demo-app
+oc delete all -l app=demo-app-2
+oc new-app https://gitlab.com/practical-openshift/hello-world.git --as-deploymet-config

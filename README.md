@@ -28,6 +28,9 @@ oc whoami --show-server                  check server you logged into
 oc config get-clusters                  list all OCP clusters you have logged into
 oc config get-contexts                  list all context have ever been created
 
+oc explain pod
+oc explain pod.spec
+
 
 
 install ansible operator:

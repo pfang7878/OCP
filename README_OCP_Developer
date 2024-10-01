@@ -32,3 +32,51 @@ oc get -o yaml dc/hello-world
 oc get rc                             check replication controllers
 oc rollout latest dc/hello-world            roll out the lastest version
 oc rollback dc/hello-world
+
+
+
+oc explain svc
+oc explain svc.spec
+oc create -f pods/pod.yaml
+oc expose --port 8080 pod/hello-world-pod
+oc status
+oc create -f pods/pod-2.yaml
+oc rsh hello-world-pod-2
+wget -qO- <service Ip:port>
+env
+exit
+oc new-app quay.io/practicalopenshift/hello-world --as-deployment-config
+oc expose svc/hello-world
+oc status
+curl <route>
+oc get -o yaml route/hello-world                                                  https://www.cnblogs.com/itzgr/p/13162476.html
+
+                                                                  
+
+configMap  -- hold configuration data. not for sensitive data,  1MB limit storage
+securet for sensitive data.
+oc create configmap message-map --from-literal MESSAGE="Hello from ConfigMap"
+oc get configmap
+oc get -oyaml cm/message-map
+oc new-app quay.io/practicalopenshift/hello-world --as-deployment-config
+oc expose svc/hello-world
+curl
+oc set env dc/hello-world --from cm/message-map
+curl         --- should see different output from last curl
+oc get -oyaml dc/hello-world             -- can see configmap info under template.spec.containers
+echo "Hello from ConfigMap file" > MESSAGE.txt              configure configmap from file
+cat MESSAGE.txt
+oc create configmap file-map --from-file=MESSAGE.txt
+oc get -oyaml cm/file-map
+oc create configmap file-map-2 --from-file=MESSAGE=MESSAGE.txt
+oc get -oyaml cm/file-map-2
+oc set env dc/hello-world --from cm/file-map-2
+curl <hello-world> 
+oc create configmap pods-example --from-file pods                        create configmap from directies
+oc get -oyaml configmap/pods-example
+
+
+
+
+
+

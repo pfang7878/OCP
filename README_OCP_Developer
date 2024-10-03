@@ -122,6 +122,42 @@ oc expose svc/private-repo
 curl 
 
 
+Builds:
+oc new-build https://gitlab.com/practical-openshift/hello-world.git
+oc get -oyaml buildconfig/hello-world
+oc get build 
+oc logs -f buildconfig/helllo-world
+oc logs -f build/hello-world
+oc start-build bc/hello-world
+oc describe is/hello-world
+oc cancel-build bc/hello-world
+use webhook:
+export GENERIC_SECRET=<secret from buildconfig>
+oc describe bc/helllo-world
+curl -X POST -k <url with replaced secret(under webhook in describe bc)> 
+building branch:
+oc new-build https://gitlab.com/practical-openshift/hello-world.git#update-message
+oc logs -f bc/hello-world
+oc new-build https://gitlab.com/practical-openshift/labs.git --context-dir hello-world           start a build in subdirectory
+oc logs bc/labs
+
+config build hooks:
+oc new-build https://gitlab.com/practical-openshift/labs.git --context-dir hello-world
+oc set build-hook bc/hello-world --post-commit --script="echo Hello From build hook"
+oc describe dc/hello-world
+oc start-build bc/hello-world
+oc logs -f bc/hello-world
+oc set build-hok bc/hello-world --post-commit --remove
+
+S2I:
+oc new-app https://gitlab.com/practical-openshift/labs.git --context-dir s2i/ruby --as-deployment-config
+oc logs -f bc/labs
+oc get pods
+oc expose svc/labs
+
+
+
+
 
 
 

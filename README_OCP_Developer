@@ -262,6 +262,60 @@ oc describe dc/hello-world
 oc scale dc/hello-world --replicas=3
 oc describe dc/hello-world
 oc scale dc/hello-world --replicas=1
+pod autoscaler:
+number of pods
+current resource usage
+desired resource usage
+oc autoscale dc/hello-world --min 1 --max 10 --cpu-percent=80
+oc get hpa
+oc describe hpa/hello-world
+oc get -oyaml hpa/hello-world
+
+templates:
+preamble
+object list
+parameters
+how to create custom templates, ow to use existing openshift templates
+oc new-project templates
+cd labs
+oc create -f template/hello-world-template.yaml
+oc get template 
+oc new-app hello-world
+oc status
+curl <your route>
+oc get -oyaml template/hello-world
+oc delete all --all
+oc new-app hello-world -p MESSAGE="Hello from parameter override."
+curl < your route>
+
+oc process hello-world
+oc process hello-world -oyaml
+oc process hello-world -oyaml -p MESSAGE="Hello from oc process."
+oc process hello-world -oyaml -p MESSAGE="Hello from oc process." > processed-objects.yaml
+head processed-objects.yaml
+oc create -f processed-objects.yaml
+oc status
+curl < your route>
+
+oc process -oyaml -f template/hello-world-template.yaml
+oc delete all --all
+oc new-app -f template/hello-world-template.yaml -p MESSAGE="Hello from oc new-app with a file"
+
+customtemplates：
+deploymentconfig, imageStream,buildconfig,service, route
+oc get -oyaml dc,is,bc,svc,route
+oc get -oyaml dc,is,bc,svc,route > test-template.yaml
+vim test-template.yaml
+1,change item to objects, 2,change kind to Template from List, 3,add name for matadata, 4,remove status from each resource 
+5,remove most of matadata except for name, labels, and annotations 6,remove any automatically-assigned resources such as 
+service virtual IPs and route hosts,7, (optional)add template parameters
+
+how to use built-in templates:
+oc get template -n openshift
+
+
+
+
 
 
 

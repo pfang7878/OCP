@@ -200,10 +200,68 @@ oc describe dc/hello-world
 oc set triggers dc/hello-world          false to trigger
 oc set triggers dc/hello-world --from-config
 oc set triggers dc/hello-world                true
+add and remove imagechange trigger:
+oc set triggers dc/hello-world --remove --from-image hello-world:latest
+oc set triggers dc/hello-world
+oc set triggers dc/hello-world --from-image hello-world:latest -c hello-world
+oc set triggers dc/hello-world
+overview of deployment strategies:
+rolling strategy: 
+start new version
+switch traffic to new version
+stop old version
+recreate strategy:  need downtime
+start new version
+switch traffic to new version
+stop old version
+custom strategy:
+start
+run custom deployment image
+end
+deployment hooks:
+rolling strategy:
+pre hook --> start new version --> switch traffic to new version --> stop old version --> post hook
+recreat strategy:
+pre hook --> stop old version --> mid hook --> start new version --> post hook
+strategy hook definition:  abort policy, retry policy, ignore policy
 
+pre-deployment hook
+oc get pods -w
+oc rollout latest dc/hello-world
+oc set deployment-hook dc/hello-world --pre -c hello-world -- /bin/echo Hello from pre-deploy hook
+oc describe dc/hello-world
+oc rollout latest dc/hello-world
+oc get events
 
+recreate strategh:   no commands,  need to edit yaml file
+oc edit dc/hello-world           remove stragegy context only change type:Recreate
+oc get -oyaml dc/hello-world
 
+liveness and readiness probles
+readiness probe: is this pod ready to accept traffic?
+liveness probe: should we restart this pod?
+probe options: 
+HTTP GET
+TCP
+Command
+probe configuration: number of retries, time between tries
+configure liveness probe:
+oc set probe dc/hello-world --liveness --open-tcp=8080
+oc describe dc/hello-world
+oc set probe dc/hello-world --liveness --open-tcp=8081
+oc get pods -w
+oc set probe dc/hello-world --liveness --open-tcp=8080
+oc get pods -w
 
+Scalling Application
+autoscaler: spread across nodes, use cheaper hardware, can handle node failure
+manual scaling:
+oc new-project scaling
+oc new-app quay.io/practicalopenshift/hello-world --as-deployment-config
+oc describe dc/hello-world
+oc scale dc/hello-world --replicas=3
+oc describe dc/hello-world
+oc scale dc/hello-world --replicas=1
 
 
 

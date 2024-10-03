@@ -6,6 +6,8 @@ oc rsh <pod name>                 shell into pod
 exit
 oc delete pod <pod name>
 oc get pods --watch  or  oc get pods -w
+
+deploymentconfig basics
 oc explain deploymentconfig
 oc new-app quay.io/practicalopenshift/hello-world --as-deployment-config
 oc status
@@ -34,7 +36,7 @@ oc rollout latest dc/hello-world            roll out the lastest version
 oc rollback dc/hello-world
 
 
-
+services and routes:
 oc explain svc
 oc explain svc.spec
 oc create -f pods/pod.yaml
@@ -154,6 +156,56 @@ oc new-app https://gitlab.com/practical-openshift/labs.git --context-dir s2i/rub
 oc logs -f bc/labs
 oc get pods
 oc expose svc/labs
+
+
+Volumes:
+i'ts filessystem mounted in pods, many suppliers(files build in pods)
+volume can be configmap, secrets, attached hard disks, cloud storage
+
+emptyDir: temporary storage on worker node, deleted when a pod is terminated not for presistent data
+oc new-project volums
+oc new-app quay.io/practicalopenshift/hello-world --as-deployment-config
+oc set volumen dc/hello-world --add --type emptyDir --mount-path /empty-dir-demo
+oc rsh hello-word
+echo "test file contents" > /empty-dir-demo/test-file.txt
+configmap volumes:
+oc create configmap cm-volume --from-literal file.txt="configMap file contents"
+oc set volume dc/hello-world --add --configmap-name cm-volume --mount-path /cm-directory
+oc get -oyaml dc/hello-world
+oc describe cm/cm-volume
+oc get pod
+oc rsh hello-world
+ls /cm-directory
+cat /cm-directory/file.txt
+                        https://kubernetes.io/docs/concepts/storage/volumes
+oc explain persistentvolume.spec
+
+advanced deploymentcofig:
+deployment triggers (when)
+deployment strategies(how)
+liveness and readiness probes
+3 types triggers:
+new image --> imagestreamtag trigger --> deploymentconfig --> trigger rollou
+developer push code --> git repo -->webhook trigger --> buildconfig create --> build --> new image -->istag imagechange trigger --> dc --> rollout
+DC yaml changed --> deploymentconfig --> trigger rollout
+
+oc new-project advanced-dc
+oc new-app quay.io/practicalopenshift/hello-world --as-deployment-config
+oc describe dc/hello-world                  can see triggers config and image
+oc set volume dc/hello-world --add --type emptyDir --mount-path /config-change-demo          trigger build
+
+oc set triggers dc/hello-world
+oc set triggers dc/hello-world --remove --from-config
+oc describe dc/hello-world
+oc set triggers dc/hello-world          false to trigger
+oc set triggers dc/hello-world --from-config
+oc set triggers dc/hello-world                true
+
+
+
+
+
+
 
 
 

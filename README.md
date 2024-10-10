@@ -125,3 +125,4 @@ oc get all
 oc delete svc jenkins jenkins-jnlp
 oc delete route jenkins
 oc get build -oyaml
+oc adm inspect ns/uat-admin02

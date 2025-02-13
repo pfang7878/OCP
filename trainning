@@ -1,5 +1,12 @@
 runc command  #this command create config file to run containers in rootless mode
 runc spec --rootless
+ls
+#created a config.json file 
+runc run debina<contain name>
+#inside container
+uid
+id
+#apt err: since apt use normal user ID to run, got err inside of container. can not use full user, only use standard user, need change the permission inside the ocp if need full user inside container.
 
 cd /chroot
 sudo su
@@ -13,3 +20,8 @@ hostname
 unshare --user --pid --map-root-user --mount --mount-proc --fork --uts --ipc --net
 unshare --user --pid --map-root-user --mount --mount-proc --fork --ipc --net
 #can not change hostname
+
+
+#below commands can do samething like runc 
+podman run
+docker run

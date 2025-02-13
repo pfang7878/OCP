@@ -1,0 +1,15 @@
+runc command  #this command create config file to run containers in rootless mode
+runc spec --rootless
+
+cd /chroot
+sudo su
+chroot rootdir
+hostname
+hostname -b chrooted
+hostname 
+exit
+hostname
+
+unshare --user --pid --map-root-user --mount --mount-proc --fork --uts --ipc --net
+unshare --user --pid --map-root-user --mount --mount-proc --fork --ipc --net
+#can not change hostname
